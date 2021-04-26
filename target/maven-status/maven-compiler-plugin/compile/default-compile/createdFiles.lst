@@ -1,0 +1,8 @@
+nl\utwente\di\store\resources\ShoppingCartResource.class
+nl\utwente\di\store\model\CatalogueItem.class
+nl\utwente\di\store\model\ItemOrder.class
+nl\utwente\di\store\dao\ShoppingCart.class
+nl\utwente\di\store\resources\CatalogueResource.class
+nl\utwente\di\store\resources\KidsBooksResource.class
+nl\utwente\di\store\resources\TechBooksResource.class
+nl\utwente\di\store\dao\Catalogue.class

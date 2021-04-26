@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<!-- Index page of the Online Book Store. -->
+
+<html lang=”en”>
+<head>
+    <title>Online Book Store</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<h1>Online Book Store</h1>
+<div id="wrapper">
+    <div id="query">
+        <p>Which book category are you interested in?</p>
+        <div>
+            <input id="search" type="text" onkeyup="loadBooks(event)"/>
+            <input id="autocomplete" type="text" disabled="disabled"/>
+        </div>
+    </div>
+
+    <div id="cart">
+        <p>Shopping cart</p>
+        <p id="costs">Total costs = 0.0 Euros</p>
+        <button onclick="location.href='checkout.html'">Checkout</button>
+    </div>
+</div>
+
+<div id="results">
+    <h2>Found items</h2>
+    <div id="items">
+        <p>No items found so far!</p>
+    </div>
+</div>
+
+
+<script>
+    <!-- Write your JavaScript code here! -->
+    function loadBooks(e) {
+        var array = ["kids", "tech"];
+        let search = document.getElementById("search");
+        let auto = document.getElementById("autocomplete");
+
+        value = search.value;
+        if (value = "") {
+            auto.value = "";
+            return;
+        }
+        new_value = value.toLowerCase();// KiD == kid true
+        auto.value = value;
+        for (i = 0; i < array.length; i++) {
+            if (array[i].lastIndexOf(new_value, 0) === 0) {
+                if (e.keyCode === 39) {// right array keycode
+                    search.value = array[i];
+                }
+                str_after = array[i].substr(new_value.length, array[i].length);
+                new_str = value + str_after;
+                auto.value = str_after;
+                if (e.key === "Enter") {
+                    var txt = "", x;
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            myObj = JSON.parse(this.responseText);
+                            txt += "<table id=\"items-table\">"
+                            for (x in myObj) {
+                                txt += "<tr><td>" + myObj[x].shortDescription + "</td><td>" + myObj[x].longDescription + "</td><td>" + myObj[x].cost + "</td><td>" + "<button id=\"" + myObj[x].itemID + "\" onclick=\"addToChart(myObj[" + x + "]\">Add to cart</button> + " < /td><td>";
+                            }
+                            txt += "</table>"
+                            document.getElementById("items").innerHTML = txt;
+                        }
+                    };
+                    xmlhttp.open("GET", restServlet + new_str, true);
+                    xmlhttp.send();
+                    search.value = "";
+                    auto.value = "";
+                }
+                return;
+            }
+        }
+    };
+</script>
+
+
+</body>
+</html>
